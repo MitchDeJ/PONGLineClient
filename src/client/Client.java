@@ -1,12 +1,9 @@
 package client;
 
-import java.sql.Date;
-
+import client.gui.LoginWindow;
 import client.net.ServerConnection;
 import client.net.packets.PacketParser;
 import client.net.packets.PacketReceiver;
-import client.net.packets.types.Packet;
-import client.net.packets.types.Packet00Register;
 
 
 public class Client implements Runnable {
@@ -42,11 +39,13 @@ public class Client implements Runnable {
 
 	public void run() {
 		init();
+		LoginWindow window = new LoginWindow();
+				
+		//packet = new Packet00Register("admin", "admin123", "admin@admin.com");
+		//packet.sendData(getConnection());
 		
-		Packet packet;
-		
-		packet = new Packet00Register("admin", "admin123", "admin@admin.com");
-		packet.sendData(getConnection());
+		//packet = new Packet01Login("admin", "admin123");
+		//packet.sendData(getConnection());
 	}
 
 	public synchronized void start() {
