@@ -39,9 +39,9 @@ public class Client implements Runnable {
 
 	public void run() {
 		init();
-		LoginWindow window = new LoginWindow();
+		LoginWindow window = new LoginWindow(this);
 				
-		//packet = new Packet00Register("admin", "admin123", "admin@admin.com");
+		//packet = new Packet00Register("admin@admin.com", "admin", "admin123", "admin123");
 		//packet.sendData(getConnection());
 		
 		//packet = new Packet01Login("admin", "admin123");

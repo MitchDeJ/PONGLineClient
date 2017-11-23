@@ -1,32 +1,40 @@
 package client.gui;
 
-import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JTextField;
-import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
+
+import client.Client;
+import client.net.packets.types.Packet;
+import client.net.packets.types.Packet00Register;
 
 public class RegisterWindow {
+	
+	private Client client;
 
 	private JFrame frmPongline;
-	private JTextField textField;
+	private JTextField emailField;
 	private JPasswordField passwordField;
-	private JTextField textField_1;
-	private JPasswordField passwordField_1;
+	private JTextField usernameField;
+	private JPasswordField confirmField;
 
 
 
 	/**
 	 * Create the application.
+	 * @param client 
 	 */
-	public RegisterWindow() {
+	public RegisterWindow(Client client) {
 		initialize();
+		frmPongline.setLocationRelativeTo(null);
+		frmPongline.setResizable(false);
 		frmPongline.setVisible(true);
+		this.client = client;
 	}
 
 	/**
@@ -39,42 +47,60 @@ public class RegisterWindow {
 		frmPongline.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmPongline.getContentPane().setLayout(null);
 		
-		textField = new JTextField();
-		textField.setBounds(144, 58, 151, 30);
-		frmPongline.getContentPane().add(textField);
-		textField.setColumns(10);
+		emailField = new JTextField();
+		emailField.setBounds(142, 58, 151, 30);
+		frmPongline.getContentPane().add(emailField);
+		emailField.setColumns(10);
 		
-		JLabel lblNewLabel = new JLabel("Username");
-		lblNewLabel.setBounds(24, 46, 108, 54);
-		frmPongline.getContentPane().add(lblNewLabel);
+		JLabel emailLabel = new JLabel("E-mail");
+		emailLabel.setBounds(48, 46, 108, 54);
+		frmPongline.getContentPane().add(emailLabel);	
 		
 		passwordField = new JPasswordField();
-		passwordField.setBounds(144, 99, 151, 30);
+		passwordField.setBounds(142, 99, 151, 30);
 		frmPongline.getContentPane().add(passwordField);
 		
 		JLabel lblPassword = new JLabel("Password");
-		lblPassword.setBounds(24, 111, 108, 14);
+		lblPassword.setBounds(48, 107, 108, 14);
 		frmPongline.getContentPane().add(lblPassword);
 		
-		JButton btnNewButton_1 = new JButton("Register");
-		btnNewButton_1.setBounds(172, 194, 89, 23);
-		frmPongline.getContentPane().add(btnNewButton_1);
+		JButton registerButton = new JButton("Register");
+		registerButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Packet packet = new Packet00Register(emailField.getText(), usernameField.getText(), passwordField.getText(), confirmField.getText());
+				packet.sendData(client.getConnection());
+			}
+		});
+		registerButton.setBounds(167, 194, 89, 23);
+		frmPongline.getContentPane().add(registerButton);
 		
-		JLabel label = new JLabel("E-mail");
-		label.setBounds(24, 16, 89, 31);
-		frmPongline.getContentPane().add(label);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(144, 16, 151, 30);
-		frmPongline.getContentPane().add(textField_1);
+		usernameField = new JTextField();
+		usernameField.setColumns(10);
+		usernameField.setBounds(142, 16, 151, 30);
+		frmPongline.getContentPane().add(usernameField);
 		
-		passwordField_1 = new JPasswordField();
-		passwordField_1.setBounds(144, 140, 151, 30);
-		frmPongline.getContentPane().add(passwordField_1);
+		JLabel lblNewLabel = new JLabel("Username");
+		lblNewLabel.setBounds(48, 16, 89, 31);
+		frmPongline.getContentPane().add(lblNewLabel);
 		
-		JLabel label_1 = new JLabel("Confirm Password");
-		label_1.setBounds(24, 148, 132, 14);
-		frmPongline.getContentPane().add(label_1);
+		confirmField = new JPasswordField();
+		confirmField.setBounds(142, 140, 151, 30);
+		frmPongline.getContentPane().add(confirmField);
+		
+		JLabel lblConfirmPass = new JLabel("Confirm Pass");
+		lblConfirmPass.setBounds(48, 148, 132, 14);
+		frmPongline.getContentPane().add(lblConfirmPass);
+		
+		JButton backButton = new JButton("<<");
+		backButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frmPongline.setVisible(false);
+				frmPongline.setEnabled(false);
+				new LoginWindow(client);
+			}
+		});
+		backButton.setBounds(48, 194, 49, 23);
+		frmPongline.getContentPane().add(backButton);
 	}
 }

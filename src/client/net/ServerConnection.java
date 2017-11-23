@@ -25,10 +25,8 @@ public class ServerConnection {
 			host = InetAddress.getByName(hostName);
 			socket = new DatagramSocket();
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SocketException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }

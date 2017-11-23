@@ -1,6 +1,5 @@
 package client.net.packets;
 
-import java.awt.Color;
 import java.net.InetAddress;
 import java.util.ArrayList;
 
@@ -19,8 +18,35 @@ public class PacketParser {
 	public void parsePacket(byte[] data, InetAddress address, int port) {
 
 		String message = new String(data).trim();
+		//client.log(message);
 		PacketTypes type = Packet.lookupPacket(message.substring(0, 2));
+		int status;
+		Packet packet;
 		switch (type) {
+		case LOGINSTATUS:
+			status = Integer.parseInt(parseIndex(message, 0));
+			if (status == 1) {
+				client.log("Logged in!");
+			} else if (status == 0) {
+				client.log("Incorrect password.");
+			} else if (status == -1) {
+				client.log("User with that username doesn't exist.");
+			}
+			break;
+		case REGISTERSTATUS:
+			status = Integer.parseInt(parseIndex(message, 0));
+			if (status == 1) {
+				client.log("Registered!");
+			} else if (status == 0) {
+				client.log("Username not available.");
+			} else if (status == 2) {
+				client.log("Email already in use.");
+			} else if (status == 3) {
+				client.log("Invalid email.");
+			} else if (status == 4) {
+				client.log("Passwords don't match.");
+			}
+			break;
 		case INVALID:
 			client.log("Received an invalid packet!");
 			break;
@@ -31,7 +57,7 @@ public class PacketParser {
 
 	}
 
-	private String parseMessageIndex(String message, int index) {
+	private String parseIndex(String message, int index) {
 
 		ArrayList<Integer> list = new ArrayList<Integer>();
 		char divider = ';';
