@@ -1,9 +1,12 @@
 package client;
 
+import client.gui.GUIWindow;
 import client.gui.LoginWindow;
 import client.net.ServerConnection;
 import client.net.packets.PacketParser;
 import client.net.packets.PacketReceiver;
+import client.net.packets.types.Packet;
+import client.net.packets.types.Packet02Quit;
 
 
 public class Client implements Runnable {
@@ -17,9 +20,9 @@ public class Client implements Runnable {
 
 	private Thread thread;
 	private boolean running = false;
-
 	
-	public Client() { }
+	private ClientState state = ClientState.AUTH;
+	public GUIWindow window;
 	
 	public static void main(String args[]) {
 		new Client().start();
@@ -27,25 +30,29 @@ public class Client implements Runnable {
 
 	
 	public void init() {
-		log("Initializing...");
-		 long start = System.currentTimeMillis() / 1000L;
 		 connection = new ServerConnection(config.hostName, config.hostPort);
 		 packetReceiver = new PacketReceiver(this);
 		 packetReceiver.start();
 		 packetParser = new PacketParser(this);
-		 long finish = System.currentTimeMillis() / 1000L;
-		 log("Initialized in "+(start-finish)+" miliseconds.");
+		 addShutdownHook();
+		 log("Initialized.");
+	}
+	
+	public void addShutdownHook() {
+		 Runtime.getRuntime().addShutdownHook(new Thread() {
+		      public void run() {
+		        if (state == ClientState.INGAME || state == ClientState.LOGGEDIN)
+		        {
+		        	Packet packet = new Packet02Quit();
+		        	packet.sendData(connection);
+		        }
+		      }
+		    });
 	}
 
 	public void run() {
 		init();
-		LoginWindow window = new LoginWindow(this);
-				
-		//packet = new Packet00Register("admin@admin.com", "admin", "admin123", "admin123");
-		//packet.sendData(getConnection());
-		
-		//packet = new Packet01Login("admin", "admin123");
-		//packet.sendData(getConnection());
+		window = new LoginWindow(this);
 	}
 
 	public synchronized void start() {
@@ -71,6 +78,14 @@ public class Client implements Runnable {
 	
 	public PacketParser getPacketParser() {
 		return packetParser;
+	}
+	
+	public ClientState getState() {
+		return state;
+	}
+	
+	public void setState(ClientState state) {
+		this.state = state;
 	}
 
 }

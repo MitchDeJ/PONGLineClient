@@ -17,11 +17,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
-public class LoginWindow {
+public class LoginWindow extends GUIWindow {
 
 	private Client client;
 	
-	private JFrame frmPongline;
 	private JTextField usernameField;
 	private JPasswordField passwordField;
 
@@ -31,9 +30,9 @@ public class LoginWindow {
 	 */
 	public LoginWindow(Client client) {
 		initialize();
-		frmPongline.setLocationRelativeTo(null);
-		frmPongline.setResizable(false);
-		frmPongline.setVisible(true);
+		frame.setLocationRelativeTo(null);
+		frame.setResizable(false);
+		frame.setVisible(true);
 		this.client = client;
 	}
 
@@ -41,29 +40,29 @@ public class LoginWindow {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmPongline = new JFrame();
-		frmPongline.getContentPane().setFont(new Font("Myanmar Text", Font.PLAIN, 11));
-		frmPongline.setTitle("PONGLine Auth");
-		frmPongline.setBounds(100, 100, 450, 300);
-		frmPongline.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmPongline.getContentPane().setLayout(null);
+		frame = new JFrame();
+		frame.getContentPane().setFont(new Font("Myanmar Text", Font.PLAIN, 11));
+		frame.setTitle("PONGLine Auth");
+		frame.setBounds(100, 100, 450, 300);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
 		
 		usernameField = new JTextField();
 		usernameField.setBounds(142, 73, 151, 30);
-		frmPongline.getContentPane().add(usernameField);
+		frame.getContentPane().add(usernameField);
 		usernameField.setColumns(10);
 		
 		JLabel lblUsername = new JLabel("Username");
 		lblUsername.setBounds(48, 43, 124, 91);
-		frmPongline.getContentPane().add(lblUsername);
+		frame.getContentPane().add(lblUsername);
 		
 		passwordField = new JPasswordField();
 		passwordField.setBounds(142, 130, 151, 30);
-		frmPongline.getContentPane().add(passwordField);
+		frame.getContentPane().add(passwordField);
 		
 		JLabel lblPassword = new JLabel("Password");
 		lblPassword.setBounds(48, 138, 117, 14);
-		frmPongline.getContentPane().add(lblPassword);
+		frame.getContentPane().add(lblPassword);
 		
 		JButton loginButton = new JButton("Login");
 		loginButton.addActionListener(new ActionListener() {
@@ -73,17 +72,17 @@ public class LoginWindow {
 			}
 		});
 		loginButton.setBounds(107, 194, 89, 23);
-		frmPongline.getContentPane().add(loginButton);
+		frame.getContentPane().add(loginButton);
 		
 		JButton registerButton = new JButton("Register");
 		registerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				frmPongline.setVisible(false);
-				frmPongline.setEnabled(false);
-				new RegisterWindow(client);
+				frame.setVisible(false);
+				frame.setEnabled(false);
+				client.window = new RegisterWindow(client);
 			}
 		});
 		registerButton.setBounds(227, 194, 89, 23);
-		frmPongline.getContentPane().add(registerButton);
+		frame.getContentPane().add(registerButton);
 	}
 }

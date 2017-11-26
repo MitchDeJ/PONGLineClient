@@ -4,8 +4,10 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 
 import client.Client;
+import client.ClientState;
 import client.net.packets.types.Packet;
 import client.net.packets.types.Packet.PacketTypes;
+import game.Game;
 
 public class PacketParser {
 
@@ -27,6 +29,9 @@ public class PacketParser {
 			status = Integer.parseInt(parseIndex(message, 0));
 			if (status == 1) {
 				client.log("Logged in!");
+				client.setState(ClientState.INGAME);
+				client.window.close();
+				new Game(client);
 			} else if (status == 0) {
 				client.log("Incorrect password.");
 			} else if (status == -1) {
@@ -45,7 +50,9 @@ public class PacketParser {
 				client.log("Invalid email.");
 			} else if (status == 4) {
 				client.log("Passwords don't match.");
-			}
+			} else if (status == 5) {
+				client.log("Invalid characters used.");
+			}			
 			break;
 		case INVALID:
 			client.log("Received an invalid packet!");
