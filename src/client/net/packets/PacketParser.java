@@ -31,7 +31,7 @@ public class PacketParser {
 				client.log("Logged in!");
 				client.setState(ClientState.INGAME);
 				client.window.close();
-				new Game(client);
+				client.getGame().start();
 			} else if (status == 0) {
 				client.log("Incorrect password.");
 			} else if (status == -1) {
@@ -53,6 +53,9 @@ public class PacketParser {
 			} else if (status == 5) {
 				client.log("Invalid characters used.");
 			}			
+			break;
+		case MOVE:
+			client.getGame().getArena().getPaddle(1).setY(Integer.parseInt(parseIndex(message, 0)));
 			break;
 		case INVALID:
 			client.log("Received an invalid packet!");

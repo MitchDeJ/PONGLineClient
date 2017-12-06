@@ -13,4 +13,7 @@ public class Configuration {
 	public int windowHeight = 480;
 	public String windowName = "PONGLine";
 	
+	//the amount of ticks to wait before we send a movement update
+	public int moveTicks = 0; 
+	
 }

@@ -6,7 +6,7 @@ import client.net.ServerConnection;
 public abstract class Packet {
 
 	public static enum PacketTypes {
-		INVALID(-1), REGISTERSTATUS(00), LOGINSTATUS(01);
+		INVALID(-1), REGISTERSTATUS(00), LOGINSTATUS(01),  MOVE(02);
 		
 		private int packetId;
 		

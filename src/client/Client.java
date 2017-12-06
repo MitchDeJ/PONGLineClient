@@ -7,6 +7,7 @@ import client.net.packets.PacketParser;
 import client.net.packets.PacketReceiver;
 import client.net.packets.types.Packet;
 import client.net.packets.types.Packet02Quit;
+import game.Game;
 
 
 public class Client implements Runnable {
@@ -23,6 +24,8 @@ public class Client implements Runnable {
 	
 	private ClientState state = ClientState.AUTH;
 	public GUIWindow window;
+	
+	private Game game = new Game(this);
 	
 	public static void main(String args[]) {
 		new Client().start();
@@ -86,6 +89,11 @@ public class Client implements Runnable {
 	
 	public void setState(ClientState state) {
 		this.state = state;
+	}
+
+
+	public Game getGame() {
+		return game;
 	}
 
 }
